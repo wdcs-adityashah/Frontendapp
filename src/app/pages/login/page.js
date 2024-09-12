@@ -19,8 +19,10 @@ export default function Login() {
             console.log(result);
 
             if (result.data.message === "Success") {
+
                 document.cookie = `token=${result.data.token};path=/`;
                 console.log('Navigating to /home'); 
+                sessionStorage.setItem("userSession", JSON.stringify(result.data.session));
                 router.push('/pages/dashboard');
             }
         } catch (err) {

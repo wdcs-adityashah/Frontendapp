@@ -1,18 +1,24 @@
 import { NextResponse } from 'next/server';
+
 import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = 'your_secret_key';
 
 const protectedRoutes = ['/dashboard'];
 
-export function middleware(req) {
-    const token = req.cookies.get('token')?.value || '';
+export async function middleware(req) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    if (req.nextUrl.pathname.startsWith('/login') && token) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/auth/signin', req.url));
+    }
+
+       if (req.nextUrl.pathname.startsWith('/login') && token) {
         try {
             jwt.verify(token, SECRET_KEY);
             return NextResponse.redirect(new URL('/dashboard', req.url));
         } catch (err) {
+            console.log(err);
         }
     }
 

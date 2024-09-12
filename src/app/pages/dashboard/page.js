@@ -1,33 +1,32 @@
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken'; 
-const SECRET_KEY = 'your_secret_key';
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function Dashboard() {
-    const cookieStore = cookies();
-    const token = cookieStore.get('token')?.value;
+export default function Dashboard() {
+  const [session, setSession] = useState(null);
+  const router = useRouter();
 
-    if (!token) {
-        return (
-            <div>
-                <p>Access denied. Please login first.</p>
-            </div>
-        );
+  useEffect(() => {
+    const storedSession = sessionStorage.getItem("userSession");
+
+    if (storedSession) {
+      try {
+        const parsedSession = JSON.parse(storedSession);
+        setSession(parsedSession);
+      } catch (error) {
+        console.error("Error parsing session data:", error);
+        sessionStorage.removeItem("userSession");
+        router.push("/pages/login");
+      }
+    } else {
+      // If no session found, redirect to login
+      router.push("/pages/login");
     }
+  }, [router]);
 
-    try {
-        const decodedToken = jwt.verify(token, SECRET_KEY);
+  if (!session) {
+    return <p>Loading...</p>;
+  }
 
-       return (
-            <div>
-                <h1>Welcome to the Dashboard</h1>
-                <p>Hello, {decodedToken.name}!</p>
-            </div>
-        );
-    } catch (error) {
-        return (
-            <div>
-                <p>Invalid or expired token. Please login again.</p>
-            </div>
-        );
-    }
+  return <p>Welcome, {session?.user?.name || session?.user?.email}!</p>;
 }
