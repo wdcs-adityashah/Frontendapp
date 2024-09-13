@@ -1,9 +1,7 @@
-import Image from "next/image";
-import Signup from "./pages/signup";
+import Signup from "./signUp/page";
+import './globals.css';
 export default function Home() {
-  return (
-   <div>
-  <Signup/>
-   </div>
-  );
+    return (
+      <Signup/>
+      )
 }

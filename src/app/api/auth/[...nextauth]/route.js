@@ -18,10 +18,26 @@ export const authOptions = {
             password: credentials.password,
           }),
         });
-        
-        const user = await res.json();
-        console.log(user);
-        if (res.ok && user) {
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const responseText = await res.text();
+        if (!responseText) {
+          console.error('Empty response from server');
+          return null;
+        }
+
+        let user;
+        try {
+          user = JSON.parse(responseText);
+        } catch (err) {
+          console.error('Error parsing JSON:', err);
+          return null;
+        }
+
+        if (user && user.token) {
           return user;
         } else {
           return null;
@@ -30,17 +46,17 @@ export const authOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/login",
   },
   session: {
-    strategy: "jwt", 
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
+        token.id = user.session.user.id;
+        token.email = user.session.user.email;
+        token.name = user.session.user.name;
       }
       return token;
     },
@@ -55,4 +71,4 @@ export const authOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+export const POST = NextAuth(authOptions);
