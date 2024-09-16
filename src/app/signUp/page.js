@@ -1,5 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from "axios";
@@ -26,7 +27,7 @@ export default function Signup(){
         });
   
         if (response.status === 201) {
-          router.push("/pages/login");
+          router.push("/login");
         } else {
           setErrors({ general: response.data.message });
         }
@@ -51,7 +52,7 @@ export default function Signup(){
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors }) => (
-              <Form className="space-y-6">
+              <Form>
                 {errors.general && (
                   <div className="text-red-500 text-sm">{errors.general}</div>
                 )}
@@ -67,7 +68,7 @@ export default function Signup(){
                     type="text"
                     name="name"
                     placeholder="Enter your name"
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm  focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                   <ErrorMessage
                     name="name"
@@ -79,7 +80,7 @@ export default function Signup(){
                 <div className="relative">
                   <label
                     htmlFor="email"
-                    className="block text-xl font-medium text-gray-700"
+                    className="block text-xl font-medium text-gray-700 mt-5"
                   >
                     Email Address
                   </label>
@@ -99,7 +100,7 @@ export default function Signup(){
                 <div className="relative">
                   <label
                     htmlFor="password"
-                    className="block text-xl font-medium text-gray-700"
+                    className="block text-xl font-medium text-gray-700 mt-5"
                   >
                     Password
                   </label>
@@ -119,11 +120,17 @@ export default function Signup(){
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-black text-white w-full py-3 rounded-lg"
+                  className="bg-black text-white w-full py-3 rounded-lg mb-5 mt-5"
                 >
                   Register
                 </button>
+
+            <p className="mb-5">Already have an account</p>
+            <Link href="/login"  className="bg-black text-white w-full px-3 py-3 rounded-lg mt-4">
+                Login
+            </Link>
               </Form>
+
             )}
           </Formik>
         </div>

@@ -57,18 +57,21 @@ export const authOptions = {
         token.id = user.session.user.id;
         token.email = user.session.user.email;
         token.name = user.session.user.name;
+        token.role =  user.session.user.role;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = {
-        id: token.id,
-        email: token.email,
-        name: token.name,
-      };
+      if (token) {
+        session.id = token.id;
+        session.email = token.email;
+        session.name = token.name;
+        session.role = token.role; // Include role in the session
+      }
       return session;
     },
   },
+  
 };
 
 export const POST = NextAuth(authOptions);

@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import * as Yup from "yup";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Login() {
@@ -56,7 +57,7 @@ export default function Login() {
                     <div className="text-red-500 text-sm mb-4">{error}</div>
                 )}
 
-                <form onSubmit={formik.handleSubmit} className="space-y-6">
+                <form onSubmit={formik.handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="email" className="block text-xl font-medium text-gray-700">
                             <strong>Email</strong>
@@ -93,9 +94,13 @@ export default function Login() {
                         ) : null}
                     </div>
 
-                    <button type="submit" className="bg-black text-white w-full py-3 rounded-lg">
+                    <button type="submit" className="bg-black text-white w-full py-3 mb-5 rounded-lg">
                         Login
                     </button>
+                    <p className="mb-5">Didn't  have an account?</p>
+            <Link  href="/signUp"  className="bg-black text-white w-full px-3 py-3 rounded-lg mt-4">
+                Register
+            </Link>
                 </form>
             </div>
         </div>
