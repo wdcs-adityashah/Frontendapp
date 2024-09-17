@@ -20,7 +20,7 @@ export default function Signup(){
   
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
       try {
-        const response = await axios.post("http://localhost:4010/api/register", {
+        const response = await axios.post("http://192.168.109.149:4010/api/register", {
           name: values.name,
           email: values.email,
           password: values.password,

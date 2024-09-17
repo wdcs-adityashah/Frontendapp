@@ -1,77 +1,73 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+// import NextAuth from 'next-auth';
+// import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const authOptions = {
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        const res = await fetch("http://localhost:4010/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        });
+// export const authOptions = {
+//   providers: [
+//     CredentialsProvider({
+//       name: 'Credentials',
+//       credentials: {
+//         email: { label: 'Email', type: 'email' },
+//         password: { label: 'Password', type: 'password' },
+//       },
+//       async authorize(credentials) {
+//         const res = await fetch('http://192.168.109.149:4010/api/auth/login', {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify(credentials),
+//         });
 
-        if (!res.ok) {
-          throw new Error('Failed to fetch user');
-        }
+//         if (!res.ok) {
+//           throw new Error('Failed to fetch user');
+//         }
 
-        const responseText = await res.text();
-        if (!responseText) {
-          console.error('Empty response from server');
-          return null;
-        }
+//         const user = await res.json();
 
-        let user;
-        try {
-          user = JSON.parse(responseText);
-        } catch (err) {
-          console.error('Error parsing JSON:', err);
-          return null;
-        }
+//         if (user && user.token) {
+//           return {
+//             id: user.id,
+//             email: user.email,
+//             name: user.name,
+//             role: user.role,
+//             accessToken: user.token,
+//           };
+//         }
+//         console.log(user,"user")
 
-        if (user && user.token) {
-          return user;
-        } else {
-          return null;
-        }
-      },
-    }),
-  ],
-  pages: {
-    signIn: "/login",
-  },
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.session.user.id;
-        token.email = user.session.user.email;
-        token.name = user.session.user.name;
-        token.role =  user.session.user.role;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.id = token.id;
-        session.email = token.email;
-        session.name = token.name;
-        session.role = token.role; // Include role in the session
-      }
-      return session;
-    },
-  },
-  
-};
+//         return null;
+//       },
+//     }),
+//   ],
+//   pages: {
+//     signIn: '/login',
+//   },
+//   session: {
+//     strategy: 'jwt',
+//   },
+//   callbacks: {
+//     async jwt({ token, user }) {
+//       console.log('jwt callback called');
+//     console.log('Token:', token);
+//     console.log('User:', user);
+//       if (user) {
+//         token.id = user.id;
+//         token.email = user.email;
+//         token.name = user.name;
+//         token.role = user.role;
+//         token.accessToken = user.accessToken;
+//       }
+//       return token;
+//     },
+//     async session({ session, token }) {
+//       session.id = token.id;
+//       session.email = token.email;
+//       session.name = token.name;
+//       session.role = token.role;
+//       session.accessToken = token.accessToken;
+//       return session;
+//     },
+//   },
+//   secret: process.env.NEXTAUTH_SECRET,
+// };
 
-export const POST = NextAuth(authOptions);
+// export const POST = NextAuth(authOptions);
+export { GET, POST } from "@/auth";

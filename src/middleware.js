@@ -24,11 +24,8 @@ export default async function middleware(req) {
     }
   
     const secretKeyBuffer = Buffer.from(SECRET_KEY, 'utf8');
-    console.log("Verifying token with secret key:", SECRET_KEY);
     const user = await jwtVerify(tokenValue, secretKeyBuffer);
-    console.log("Token verified successfully:", user);
     const { role } = user.payload;
-    console.log(role);
     if(pathname === '/login' && token){
       return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     }

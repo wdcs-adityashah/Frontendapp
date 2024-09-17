@@ -31,7 +31,7 @@ export default function Dashboard() {
 
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:4010/api/logout');
+            await axios.post('http://192.168.109.149:4010/api/logout');
 
             sessionStorage.removeItem("authData");
             document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";

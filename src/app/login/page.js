@@ -28,7 +28,7 @@ export default function Login() {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const result = await axios.post('http://localhost:4010/api/login', values);
+                const result = await axios.post('http://192.168.109.149:4010/api/login', values);
                 console.log(result);
 
                 if (result.data.message === "Success") {
