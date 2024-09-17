@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
+import Link from "next/link";
 export default function Dashboard() {
     const [session, setSession] = useState(null);
     const router = useRouter();
@@ -57,12 +57,15 @@ export default function Dashboard() {
                 <p className="text-lg mb-6">
                     Welcome, <span className="font-bold">{session?.user?.name || session?.user?.email}</span>!
                 </p>
+                <Link href="/admin" className="text-red-800 text-3xl inline-block mb-10 mr-5">Admin</Link>
+                <Link href="/manager" className="text-red-800 text-3xl inline-block mb-10">Manager</Link>
                 <button
                     onClick={handleLogout}
-                    className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
+                    className="w-full bg-red-500 mt-5 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
                 >
                     Logout
                 </button>
+               
             </div>
         </div>
     );
